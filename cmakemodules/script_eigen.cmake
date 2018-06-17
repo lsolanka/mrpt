@@ -7,7 +7,11 @@ mark_as_advanced(EIGEN_MATRIXBASE_PLUGIN)
 mark_as_advanced(EIGEN_MATRIXBASE_PLUGIN_POST_IMPL)
 
 # By default: Use system version
-find_package(Eigen3 QUIET NO_MODULE)
+IF(HUNTER_ENABLED)
+    find_package(Eigen3 CONFIG REQUIRED)
+ELSE()
+    find_package(Eigen3 QUIET NO_MODULE)
+ENDIF()
 
 set(EIGEN_USE_EMBEDDED_VERSION OFF CACHE BOOL "Download Eigen3 and use it instead of system version")
 if (EIGEN_USE_EMBEDDED_VERSION)

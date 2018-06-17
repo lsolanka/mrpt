@@ -5,7 +5,7 @@ set(CMAKE_MRPT_HAS_OPENCV 0)
 set(MRPT_OPENCV_VERSION 0.0.0)
 set(MRPT_OPENCV_VERSION_HEX "0x000")
 set(MRPT_OPENCV_SRC_DIR "")
-set(OpenCV_IGNORE_PKGCONFIG OFF CACHE BOOL "Forces using OpenCVConfig.cmake to find OpenCV")
+set(OpenCV_IGNORE_PKGCONFIG ON CACHE BOOL "Forces using OpenCVConfig.cmake to find OpenCV")
 mark_as_advanced(OpenCV_IGNORE_PKGCONFIG)
 
 # Use CMAKE module if opencv's not been detected yet:

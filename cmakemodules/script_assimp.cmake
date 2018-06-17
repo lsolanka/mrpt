@@ -8,9 +8,17 @@ set(ASSIMP_FOUND_VIA_CMAKE 0)
 
 set(EMBEDDED_ASSIMP_DIR "${MRPT_BINARY_DIR}/otherlibs/assimp")
 
+IF(HUNTER_ENABLED)
+    find_package(Assimp CONFIG REQUIRED)
+    SET(CMAKE_MRPT_HAS_ASSIMP 1)
+    SET(CMAKE_MRPT_HAS_ASSIMP_SYSTEM 0)
+    SET(ASSIMP_LIBRARIES Assimp::assimp)
+    SET(ASSIMP_FOUND TRUE)
+ENDIF()
+
 # 1st) Try to locate the pkg via pkg-config:
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
+if(PKG_CONFIG_FOUND AND NOT HUNTER_ENABLED)
 	PKG_CHECK_MODULES(ASSIMP QUIET assimp)
 	if (ASSIMP_FOUND)
 		if ($ENV{VERBOSE})

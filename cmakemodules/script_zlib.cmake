@@ -7,10 +7,10 @@ if (MSVC)
 else()
 	find_package(ZLIB)
 	if (ZLIB_FOUND)
-			#message(STATUS "Found library: zlib - Include: ${ZLIB_INCLUDE_DIR}")
+			#MESSAGE(STATUS "Found library: zlib - Include: ${ZLIB_INCLUDE_DIR}")
 			include_directories("${ZLIB_INCLUDE_DIR}")
 
-			set(MRPT_ZLIB_LIBS ${ZLIB_LIBRARIES}) # APPEND_MRPT_LIBS(z)
+			set(MRPT_ZLIB_LIBS ZLIB::zlib) # APPEND_MRPT_LIBS(z)
 
 			set(CMAKE_MRPT_HAS_ZLIB_SYSTEM 1)
 			set(CMAKE_MRPT_HAS_ZLIB_SYSTEM_IS_WX 0)
