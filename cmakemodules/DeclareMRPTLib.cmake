@@ -231,7 +231,7 @@ macro(internal_define_mrpt_lib name headers_only is_metalib)
 	if (CMAKE_MRPT_USE_DEB_POSTFIXS)
 		set(LIB_INCL_DIR_EXPRESSION "/usr/include/mrpt/${name}/include")
 	else()
-		set(LIB_INCL_DIR_EXPRESSION "$<INSTALL_PREFIX>/include/mrpt/${name}/include")
+		set(LIB_INCL_DIR_EXPRESSION "include/mrpt/${name}/include")
 	endif()
 
 	target_include_directories(${name} ${iftype}
