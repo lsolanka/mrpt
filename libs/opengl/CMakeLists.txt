@@ -57,7 +57,7 @@ define_mrpt_lib(
 	)
 
 if(BUILD_mrpt-opengl)
-	add_dependencies(opengl libcvd)
+	add_dependencies(opengl CVD::CVD)
 	include_directories(${CVD_INCLUDE_DIRS})
 
 	# Ignore precompiled headers in some sources:

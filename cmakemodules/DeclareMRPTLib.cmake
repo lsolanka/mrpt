@@ -184,7 +184,7 @@ macro(internal_define_mrpt_lib name headers_only is_metalib)
 
 	# Add main lib header (may not exist in meta-libs only):
 	if (EXISTS "${CMAKE_SOURCE_DIR}/libs/${name}/include/mrpt/${name}.h")
-		set(all_${name}_srcs ${all_${name}_srcs} "${CMAKE_SOURCE_DIR}/libs/${name}/include/mrpt/${name}.h")
+		set(all_${name}_srcs ${all_${name}_srcs} "include/mrpt/${name}.h")
 	endif ()
 
 	if (NOT ${headers_only})
@@ -218,7 +218,7 @@ macro(internal_define_mrpt_lib name headers_only is_metalib)
 		REMOVE_MATCHING_FILES_FROM_LIST(".*.h" all_${name}_srcs)
 		
 		# List of hdr files (for editing in IDEs,etc.):
-		target_sources(${name} INTERFACE ${all_${name}_srcs})
+		#target_sources(${name} INTERFACE ${all_${name}_srcs})
 		
 		set(iftype INTERFACE)
 	endif ()
