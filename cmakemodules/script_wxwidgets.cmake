@@ -36,6 +36,7 @@ if(UNIX)
 endif()
 
 # We need the Find package for wxWidgets to work
+message(STATUS "CMAKE_FIND_ROOT_PATH: ${CMAKE_FIND_ROOT_PATH}")
 find_package(wxWidgets COMPONENTS ${wxWidgets_MRPT_COMPONENTS_TO_SEARCH})
 # Did we find wxWidgets ? This condition will fail for as long as the internal vars do not point to the proper wxWidgets configuration
 if(wxWidgets_FOUND)
