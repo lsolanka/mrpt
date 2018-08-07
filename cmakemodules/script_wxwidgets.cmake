@@ -36,7 +36,9 @@ if(UNIX)
 endif()
 
 # We need the Find package for wxWidgets to work
-message(STATUS "CMAKE_FIND_ROOT_PATH: ${CMAKE_FIND_ROOT_PATH}")
+# A slight hack to get around the stock FindwxWidgets which doesn't work with Hunter very
+# well - it uses ONLY_CMAKE_FIND_ROOT_PATH in find_program to find wx-config.
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules")
 find_package(wxWidgets COMPONENTS ${wxWidgets_MRPT_COMPONENTS_TO_SEARCH})
 # Did we find wxWidgets ? This condition will fail for as long as the internal vars do not point to the proper wxWidgets configuration
 if(wxWidgets_FOUND)
