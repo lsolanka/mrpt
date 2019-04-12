@@ -369,7 +369,6 @@ macro(internal_define_mrpt_lib name headers_only is_metalib)
 			# The /ignore:4199 is to disable warnings like these:
 			#  warning LNK4199: /DELAYLOAD:libmx.dll ignored; no imports found from libmx.dll
 			# in libs which do not (yet) support mex stuff
-<<<<<<< HEAD
 		endif ()
 
 		if (USE_IWYU)
@@ -454,105 +453,6 @@ macro(internal_define_mrpt_lib name headers_only is_metalib)
 	if(MRPT_ENABLE_PRECOMPILED_HDRS AND MSVC)
 		foreach(_N ${${name}_PLUGIN_SRCS_NAME})
 			#message(STATUS "Disabling precomp hdrs for N=${_N}: ${${_N}_FILES}")
-=======
-		ENDIF (CMAKE_MRPT_HAS_MATLAB AND BUILD_SHARED_LIBS AND MSVC)
-
-		# Special directories when building a .deb package:
-		IF(CMAKE_MRPT_USE_DEB_POSTFIXS)
-			SET(MRPT_PREFIX_INSTALL "${CMAKE_INSTALL_PREFIX}/libmrpt-${name}${CMAKE_MRPT_VERSION_NUMBER_MAJOR}.${CMAKE_MRPT_VERSION_NUMBER_MINOR}/usr/")
-		ELSE(CMAKE_MRPT_USE_DEB_POSTFIXS)
-			SET(MRPT_PREFIX_INSTALL "")
-		ENDIF(CMAKE_MRPT_USE_DEB_POSTFIXS)
-
-	ENDIF (NOT ${headers_only})
-
-    # make sure the library gets installed
-    IF (NOT is_metalib)
-        INSTALL(TARGETS mrpt-${name}
-            EXPORT MRPTTargets
-            RUNTIME DESTINATION ${MRPT_PREFIX_INSTALL}bin  COMPONENT Libraries
-            LIBRARY DESTINATION ${MRPT_PREFIX_INSTALL}${CMAKE_INSTALL_LIBDIR} COMPONENT Libraries
-            ARCHIVE DESTINATION ${MRPT_PREFIX_INSTALL}${CMAKE_INSTALL_LIBDIR} COMPONENT Libraries  # WAS: lib${LIB_SUFFIX}
-            )
-
-        # Collect .pdb debug files for optional installation:
-        IF (MSVC)
-            SET(PDB_FILE
-                "${CMAKE_BINARY_DIR}/bin/Debug/${MRPT_LIB_PREFIX}mrpt-${name}${MRPT_DLL_VERSION_POSTFIX}${CMAKE_DEBUG_POSTFIX}.pdb")
-            IF (EXISTS "${PDB_FILE}")
-                INSTALL(FILES ${PDB_FILE} DESTINATION bin COMPONENT LibrariesDebugInfoPDB)
-            ENDIF ()
-        ENDIF(MSVC)
-    ENDIF (NOT is_metalib)
-
-	# Generate the libmrpt-$NAME.pc file for pkg-config:
-	IF(UNIX)
-		SET(mrpt_pkgconfig_LIBNAME ${name})
-		get_property(_lst_deps GLOBAL PROPERTY "mrpt-${name}_LIB_DEPS")
-
-		# a comma-separated list of other mrpt-* dependencies.
-		SET(mrpt_pkgconfig_REQUIRES "")
-		FOREACH(DEP ${_lst_deps})
-			IF(NOT "${mrpt_pkgconfig_REQUIRES}" STREQUAL "")
-				SET(mrpt_pkgconfig_REQUIRES "${mrpt_pkgconfig_REQUIRES},")
-			ENDIF(NOT "${mrpt_pkgconfig_REQUIRES}" STREQUAL "")
-			SET(mrpt_pkgconfig_REQUIRES "${mrpt_pkgconfig_REQUIRES}${DEP}")
-		ENDFOREACH(DEP)
-
-		# Special case: For mrpt-math, mark "eigen3" as a pkg-config dependency only
-		#  if we are instructed to do so: (EIGEN_USE_EMBEDDED_VERSION=OFF)
-		IF(NOT EIGEN_USE_EMBEDDED_VERSION)
-			SET(mrpt_pkgconfig_REQUIRES "${mrpt_pkgconfig_REQUIRES},eigen3")
-		ENDIF(NOT EIGEN_USE_EMBEDDED_VERSION)
-
-		# "Libs" lines in .pc files:
-		# -----------------------------------------------------------
-		# * for install, normal lib:
-		#    Libs: -L${libdir}  -lmrpt-@mrpt_pkgconfig_LIBNAME@
-		# * for install, headers-only lib:
-		#    <none>
-		# * for local usage, normal lib:
-		#    Libs: -L${libdir} -Wl,-rpath,${libdir} -lmrpt-@mrpt_pkgconfig_LIBNAME@
-		# * for local usage, headers-only lib:
-		#    <none>
-		IF (${headers_only})
-			SET(mrpt_pkgconfig_lib_line_install "")
-			SET(mrpt_pkgconfig_lib_line_noinstall "")
-			SET(mrpt_pkgconfig_libs_private_line "")
-		ELSE (${headers_only})
-			SET(mrpt_pkgconfig_lib_line_install "Libs: -L\${libdir}  -lmrpt-${name}")
-			SET(mrpt_pkgconfig_lib_line_noinstall "Libs: -L\${libdir} -Wl,-rpath,\${libdir} -lmrpt-${name}")
-			SET(mrpt_pkgconfig_libs_private_line "Libs.private: ${MRPTLIB_LINKER_LIBS}")
-		ENDIF (${headers_only})
-
-		# (1/2) Generate the .pc file for "make install"
-		CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/parse-files/mrpt_template.pc.in" "${CMAKE_BINARY_DIR}/pkgconfig/mrpt-${name}.pc" @ONLY)
-
-		# (2/2) And another .pc file for local usage:
-		SET(mrpt_pkgconfig_NO_INSTALL_SOURCE "${MRPT_SOURCE_DIR}")
-		SET(mrpt_pkgconfig_NO_INSTALL_BINARY "${MRPT_BINARY_DIR}")
-		CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/parse-files/mrpt_template_no_install.pc.in" "${CMAKE_BINARY_DIR}/pkgconfig-no-install/mrpt-${name}.pc" @ONLY)
-
-		IF (NOT IS_DEBIAN_DBG_PKG)
-			STRING(REPLACE "xxx" "${name}" this_lib_dev_INSTALL_PREFIX "${libmrpt_xxx_dev_INSTALL_PREFIX}")
-			# .pc file:
-			INSTALL(
-				FILES "${CMAKE_BINARY_DIR}/pkgconfig/mrpt-${name}.pc"
-				DESTINATION ${this_lib_dev_INSTALL_PREFIX}${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-
-			# Install the headers of all the MRPT libs:
-			# (in win32 the /libs/* tree is install entirely, not only the headers):
-			SET(SRC_DIR "${MRPT_SOURCE_DIR}/libs/${name}/include/")
-			IF (EXISTS "${SRC_DIR}")  # This is mainly to avoid problems with "virtual module" names
-				INSTALL(DIRECTORY "${SRC_DIR}" DESTINATION ${this_lib_dev_INSTALL_PREFIX}include)
-			ENDIF()
-		ENDIF()
-	ENDIF() # UNIX
-
-	IF(MRPT_ENABLE_PRECOMPILED_HDRS AND MSVC)
-		FOREACH(_N ${${name}_PLUGIN_SRCS_NAME})
-			#MESSAGE(STATUS "Disabling precomp hdrs for N=${_N}: ${${_N}_FILES}")
->>>>>>> further simplify include installation directories
 			set_source_files_properties(${${_N}_FILES} PROPERTIES COMPILE_FLAGS "/Y-")
 		endforeach()
 	endif()
