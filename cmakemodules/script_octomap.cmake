@@ -4,7 +4,7 @@ set(CMAKE_MRPT_HAS_OCTOMAP_SYSTEM 0)
 
 # Try to locate the pkg via CMake:
 find_package(OCTOMAP CONFIG REQUIRED)
-if (OCTOMAP_FOUND)
+if (OCTOMAP_FOUND AND NOT HUNTER_ENABLED)
 	if ($ENV{VERBOSE})
 		message(STATUS "liboctomap: Found via pkg-config")
 		message(STATUS " OCTOMAP_LIBRARIES=${OCTOMAP_LIBRARIES}")
