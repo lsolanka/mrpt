@@ -20,6 +20,15 @@
 # =========================================================================
 include(CMakeFindDependencyMacro)
 
+# FIXME: These find_package calls are only required with hunter
+find_package(Assimp CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
+find_package(JPEG CONFIG REQUIRED)
+find_package(octomap CONFIG REQUIRED)
+find_package(OpenCV CONFIG REQUIRED)
+find_package(ZLIB CONFIG REQUIRED)
+find_package(CVD CONFIG REQUIRED)
+
 set(MRPT_LIBRARIES "")
 foreach(_comp ${MRPT_FIND_COMPONENTS})
   if (MRPT_FIND_REQUIRED_${_comp})
