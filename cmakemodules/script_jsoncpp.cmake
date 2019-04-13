@@ -6,7 +6,7 @@ option(DISABLE_JSONCPP "Forces NOT using JSONCPP, even if it could be found by C
 mark_as_advanced(DISABLE_JSONCPP)
 
 if(NOT DISABLE_JSONCPP)
-	find_package(jsoncpp QUIET)
+	find_package(jsoncpp CONFIG REQUIRED)
 	if(jsoncpp_FOUND)
 		# cmake imported target: "jsoncpp_lib"
 		set(CMAKE_MRPT_HAS_JSONCPP 1)
